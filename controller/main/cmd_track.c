@@ -2,16 +2,23 @@
 #include "cJSON.h"
 #include "command_helpers.h"
 
-// Creates an instance
-// Pins entered in sequence IN1-IN3-IN2-IN4 for proper step sequence
-AccelStepper myStepper(MotorInterfaceType, 8, 10, 9, 11);
+float sidereal_omega_steps = sidereal_theta * steps_in_rotation / (2 * Pi)
+float float microsecond_steps_gap = 1e6/(2*sidereal_omega_steps) // halved as gap before and after step
 
 void handle_cmd_start(cJSON *root)
 {
     ESP_LOGI("controller", "Start received");
     controller_log_line("Start received\n");
 
-    myStepper.runSpeed();
+    // Set motor direction clockwise, LOW for anti-clockwise
+    digitalWrite(dirPin, HIGH);
+
+    while (1) {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(microsecond_steps_gap);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(microsecond_steps_gap);
+    }
 }
 
 void handle_cmd_stop(cJSON *root) {
