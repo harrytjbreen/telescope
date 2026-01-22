@@ -11,6 +11,7 @@
 #include "controller_config.h"
 #include "command_helpers.h"
 #include "command_handlers.h"
+#include "setup_motor.h"
 
 static const char *TAG = "controller";
 
@@ -63,6 +64,8 @@ void app_main(void)
 
     static char line_buf[512];
     static size_t line_len = 0;
+
+    setup_motor();
 
     while (1) {
         uint8_t rx_buf[128];
