@@ -9,7 +9,6 @@ void handle_cmd_start(cJSON *root)
     ESP_LOGI("controller", "Start received");
     controller_log_line("Start received\n");
 
-    // Set motor direction clockwise, LOW for anti-clockwise
     stepperRA.setMaxSpeed(sidereal_omega_steps);
     stepperRA.setSpeed(sidereal_omega_steps);
 
